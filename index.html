@@ -153,50 +153,152 @@
       z-index: 3;
       animation: lockupBreath var(--logo-speed) ease-in-out infinite;
     }
+    .logo-wrap {
+  position: relative;
+  width: min(320px, 38vw);
+  display: grid;
+  place-items: center;
+  margin-bottom: clamp(18px, 2vw, 28px);
+}
+
+.logo-glow {
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,242,204,0.22),
+      rgba(226,150,37,0.12) 42%,
+      transparent 72%
+    );
+  filter: blur(22px);
+  opacity: 0;
+  animation: logoGlow var(--cycle) ease-in-out infinite;
+}
+
+.main-logo {
+  position: relative;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+
+  opacity: 0;
+
+  filter:
+    drop-shadow(0 0 10px rgba(226,150,37,0.32))
+    drop-shadow(0 0 24px rgba(226,150,37,0.22));
+
+  transform:
+    scale(0.94)
+    translateY(10px);
+
+  animation:
+    logoReveal var(--cycle) ease-in-out infinite;
+}
+
+.signal-rings {
+  position: absolute;
+  top: 8%;
+  width: min(520px, 62vw);
+  height: min(320px, 34vw);
+  pointer-events: none;
+}
+
+.ring {
+  position: absolute;
+  border: 4px solid rgba(230,214,180,0.85);
+  border-radius: 50%;
+  opacity: 0;
+  filter: drop-shadow(0 0 10px rgba(226,150,37,0.34));
+}
+
+.ring-1 {
+  inset: 22% 10%;
+  animation: ringPulse var(--cycle) ease-in-out infinite;
+}
+
+.ring-2 {
+  inset: 12% 2%;
+  animation: ringPulse var(--cycle) ease-in-out infinite;
+  animation-delay: 0.12s;
+}
+
+.ring-3 {
+  inset: 0% -8%;
+  animation: ringPulse var(--cycle) ease-in-out infinite;
+  animation-delay: 0.24s;
+}
+
+@keyframes logoReveal {
+
+  0%, 14% {
+    opacity: 0;
+    transform:
+      scale(0.92)
+      translateY(14px);
+  }
+
+  28% {
+    opacity: 1;
+  }
+
+  42%, 78% {
+    opacity: 1;
+    transform:
+      scale(1)
+      translateY(0);
+  }
+
+  92%, 100% {
+    opacity: 0;
+    transform:
+      scale(1.03)
+      translateY(-6px);
+  }
+}
+
+@keyframes logoGlow {
+
+  0%, 18%, 100% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+
+  40%, 72% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ringPulse {
+
+  0%, 42% {
+    opacity: 0;
+    transform: scale(0.84);
+  }
+
+  54% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 0.55;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
 
     @keyframes lockupBreath {
       0%, 100% { filter: drop-shadow(0 0 0 rgba(226, 150, 37, 0)); opacity: 0.78; }
       22%, 72% { filter: drop-shadow(0 0 22px rgba(226, 150, 37, 0.32)); opacity: 1; }
     }
 
-    .mark {
-      width: min(250px, 34vw);
-      margin-bottom: clamp(14px, 2.2vw, 24px);
-    }
 
-    .stroke-line {
-      fill: none;
-      stroke: var(--gold);
-      stroke-width: 4.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      filter: drop-shadow(0 0 10px rgba(226, 150, 37, 0.35));
-      stroke-dasharray: 1000;
-      stroke-dashoffset: 1000;
-      animation: drawLogo var(--logo-speed) ease-in-out infinite;
-    }
-
-    .stroke-fill {
-      fill: rgba(230, 214, 180, 0.08);
-      stroke: var(--gold);
-      stroke-width: 4.5;
-      stroke-linejoin: round;
-      filter: drop-shadow(0 0 10px rgba(226, 150, 37, 0.28));
-      stroke-dasharray: 1000;
-      stroke-dashoffset: 1000;
-      animation: drawLogo var(--logo-speed) ease-in-out infinite, fillIn var(--logo-speed) ease-in-out infinite;
-    }
-
-    .radio-wave {
-      fill: none;
-      stroke: var(--gold);
-      stroke-width: 5;
-      stroke-linecap: round;
-      opacity: 0;
-      filter: drop-shadow(0 0 10px rgba(226, 150, 37, 0.34));
-      animation: waveIn var(--logo-speed) ease-in-out infinite;
-    }
-
+  
     .wave-2 { animation-delay: 0.08s; }
     .wave-3 { animation-delay: 0.16s; }
 
@@ -322,10 +424,7 @@
         width: 82vw;
       }
 
-      .mark {
-        width: 42vw;
-      }
-    }
+
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -336,10 +435,7 @@
 
       .title,
       .tagline,
-      .divider,
-      .stroke-line,
-      .stroke-fill,
-      .radio-wave {
+      .divider {
         opacity: 1;
         transform: none;
         stroke-dashoffset: 0;
@@ -349,56 +445,73 @@
 </head>
 <body>
   <main class="stage" aria-label="Newcastle Port Pulse animated intro">
+
+    <div class="corner-noise" aria-hidden="true"></div>
+
     <section class="intro">
+
+      <div class="halo" aria-hidden="true"></div>
+
       <svg class="pulse-svg" viewBox="0 0 1100 620" aria-hidden="true">
         <defs>
           <linearGradient id="pulseGradient" x1="0%" x2="100%" y1="0%" y2="0%">
             <stop offset="0%" stop-color="rgba(230,214,180,0)" />
-            <stop offset="18%" stop-color="#e29625" />
-            <stop offset="46%" stop-color="#fff2cc" />
+            <stop offset="16%" stop-color="#e29625" />
+            <stop offset="45%" stop-color="#fff2cc" />
             <stop offset="78%" stop-color="#e29625" />
             <stop offset="100%" stop-color="rgba(230,214,180,0)" />
           </linearGradient>
         </defs>
 
-        <path class="pulse-base" d="M -90 390 L 115 390 L 126 390 L 136 370 L 150 422 L 166 390 L 186 390 L 200 376 L 215 390 L 240 390 L 254 372 L 270 430 L 288 390 L 304 390 L 318 380 L 334 398 L 350 390 L 368 390 L 385 350 L 408 256 L 436 390 L 468 390 L 500 386 L 545 386 L 590 386 L 635 386 L 680 386 L 725 386 L 770 386 L 815 386 L 860 386 L 905 386 L 950 386 L 970 386 L 980 370 L 992 410 L 1006 386 L 1030 386 L 1048 386 L 1060 376 L 1074 398 L 1090 386 L 1180 386" />
-        <path class="pulse-draw" d="M -90 390 L 115 390 L 126 390 L 136 370 L 150 422 L 166 390 L 186 390 L 200 376 L 215 390 L 240 390 L 254 372 L 270 430 L 288 390 L 304 390 L 318 380 L 334 398 L 350 390 L 368 390 L 385 350 L 408 256 L 436 390 L 468 390 L 500 386 L 545 386 L 590 386 L 635 386 L 680 386 L 725 386 L 770 386 L 815 386 L 860 386 L 905 386 L 950 386 L 970 386 L 980 370 L 992 410 L 1006 386 L 1030 386 L 1048 386 L 1060 376 L 1074 398 L 1090 386 L 1180 386" />
+        <path
+          class="pulse-base"
+          d="M -80 390 L 90 390 L 118 390 L 128 372 L 140 416 L 154 390 L 180 390 L 192 378 L 205 390 L 238 390 L 252 371 L 268 428 L 286 390 L 306 390 L 318 381 L 333 399 L 352 390 L 372 390 L 388 354 L 410 258 L 438 390 L 488 390 L 535 388 L 580 388 L 625 388 L 670 388 L 715 388 L 760 388 L 805 388 L 850 388 L 895 388 L 940 388 L 970 388 L 981 371 L 994 408 L 1008 388 L 1030 388 L 1050 388 L 1063 377 L 1077 399 L 1094 388 L 1180 388"
+        />
+
+        <path
+          class="pulse-draw"
+          d="M -80 390 L 90 390 L 118 390 L 128 372 L 140 416 L 154 390 L 180 390 L 192 378 L 205 390 L 238 390 L 252 371 L 268 428 L 286 390 L 306 390 L 318 381 L 333 399 L 352 390 L 372 390 L 388 354 L 410 258 L 438 390 L 488 390 L 535 388 L 580 388 L 625 388 L 670 388 L 715 388 L 760 388 L 805 388 L 850 388 L 895 388 L 940 388 L 970 388 L 981 371 L 994 408 L 1008 388 L 1030 388 L 1050 388 L 1063 377 L 1077 399 L 1094 388 L 1180 388"
+        />
+
         <circle class="pulse-dot" cx="0" cy="0" r="6" />
       </svg>
 
       <div class="logo-lockup">
-        <svg class="mark" viewBox="0 0 260 260" role="img" aria-label="Animated lighthouse mark">
-          <path class="radio-wave wave-3" d="M50 60 C20 92 20 142 50 174" />
-          <path class="radio-wave wave-2" d="M73 77 C52 101 52 132 73 157" />
-          <path class="radio-wave wave-1" d="M94 96 C82 110 82 124 94 138" />
-          <path class="radio-wave wave-1" d="M166 96 C178 110 178 124 166 138" />
-          <path class="radio-wave wave-2" d="M187 77 C208 101 208 132 187 157" />
-          <path class="radio-wave wave-3" d="M210 60 C240 92 240 142 210 174" />
 
-          <path class="stroke-fill" d="M98 222 L112 96 L148 96 L162 222 Z" />
-          <path class="stroke-line" d="M86 222 H174" />
-          <path class="stroke-line" d="M103 184 H157" />
-          <path class="stroke-line" d="M106 146 H154" />
-          <path class="stroke-line" d="M96 102 H164" />
-          <path class="stroke-line" d="M104 92 Q130 72 156 92" />
-          <path class="stroke-line" d="M112 78 H148" />
-          <path class="stroke-line" d="M130 62 V48" />
-          <path class="stroke-line" d="M124 48 Q130 36 136 48" />
-          <path class="stroke-line" d="M120 116 Q130 106 140 116 V138 H120 Z" />
-          <path class="stroke-line" d="M120 158 Q130 148 140 158 V182 H120 Z" />
-          <path class="stroke-line" d="M118 198 Q130 186 142 198 V222 H118 Z" />
-          <path class="stroke-line" d="M72 222 C84 214 92 216 100 222" />
-          <path class="stroke-line" d="M160 222 C172 214 184 216 194 222" />
-        </svg>
+        <div class="logo-wrap">
 
-        <h1 class="title">Newcastle<br />Port Pulse</h1>
+          <div class="logo-glow"></div>
+
+          <img
+            src="assets/Logo.png"
+            alt="Newcastle Port Pulse Logo"
+            class="main-logo"
+          />
+
+        </div>
+
+        <div class="signal-rings" aria-hidden="true">
+          <span class="ring ring-1"></span>
+          <span class="ring ring-2"></span>
+          <span class="ring ring-3"></span>
+        </div>
+
+        <h1 class="title">
+          Newcastle<br />
+          Port Pulse
+        </h1>
+
         <div class="divider"></div>
-        <p class="tagline">Your Signal on the Lakeshore.</p>
+
+        <p class="tagline">
+          Your Signal on the Lakeshore.
+        </p>
+
       </div>
     </section>
 
-    <div class="scan-glint" aria-hidden="true"></div>
-    <div class="vignette" aria-hidden="true"></div>
+    <div class="glint" aria-hidden="true"></div>
+
   </main>
 </body>
 </html>
